@@ -1,5 +1,5 @@
 import {
-  Delivery,
+  Delivery, Delivery2,
   Dough,
   Ingredient,
   Order,
@@ -20,8 +20,8 @@ export function getDough(value: string): Dough {
       return Dough.AMERICAN;
   }
 }
-export function getIngredient(value: string): Ingredient {
-  switch (value.toLowerCase()) {
+export function getIngredient(value: { id: number, ingredient: string }): Ingredient {
+  switch (value.ingredient.toLowerCase()) {
     default:
     case "ham":
       return Ingredient.HAM;
@@ -119,7 +119,12 @@ export function getDeliveries() {
   return Object.values(Delivery).filter((key) => isNaN(Number(key)));
 }
 
+export function getDeliveries2() {
+  return Object.values(Delivery2).filter((key) => isNaN(Number(key)));
+}
+
 export function PizzaToPizzaDto(pizza: Pizza) {
+
   const size = (
     pizza.size === Size.MEGA_LARGE ? "MEGA_LARGE" : pizza.size
   ).toUpperCase();
@@ -128,32 +133,55 @@ export function PizzaToPizzaDto(pizza: Pizza) {
     pizza.sauce === Sauce.TOMATO_CHEESE ? "TOMATO_CHEESE" : pizza.sauce
   ).toUpperCase();
 
-  return {
-    id: pizza.id || 0,
-    name: pizza.name,
-    dough: pizza.dough.toUpperCase(),
-    size,
-    sauce,
-    ingredientsList: pizza.ingredientsList
-      .map((ingredient) => ingredient.toUpperCase())
-      .sort(),
-  };
+  const isArrOfStrings = Array.isArray(pizza.ingredientsList) && pizza.ingredientsList.every(item => typeof item === 'string');
+  if(!isArrOfStrings){
+    return {
+      id: pizza.id || 0,
+      name: pizza.name,
+      dough: pizza.dough.toUpperCase(),
+      size,
+      sauce,
+      ingredientsList: pizza.ingredientsList.map((ingredientItem) => ({
+            id: null,
+          //@ts-ignore
+            ingredient: ingredientItem.ingredient.toUpperCase()
+          }))
+          .sort((a, b) => a.ingredient.localeCompare(b.ingredient)),
+    };
+  }else{
+    return {
+      id: pizza.id || 0,
+      name: pizza.name,
+      dough: pizza.dough.toUpperCase(),
+      size,
+      sauce,
+      ingredientsList: pizza.ingredientsList
+          .map((ingredientItem) => ({
+            id: null,
+            ingredient: ingredientItem.toUpperCase()
+          }))
+          .sort((a, b) => a.ingredient.localeCompare(b.ingredient)),
+    };
+  }
+
+
 }
 
 export function PizzaDtoToPizza(pizza: any): Pizza {
   return {
-    id: pizza.id,
+    id: pizza.id || 0,
     name: pizza.name,
     dough: getDough(pizza.dough),
     size: getSize(pizza.size),
     sauce: getSauce(pizza.sauce),
+    //@ts-ignore
     ingredientsList: (pizza.ingredientsList as any[])
-      .map((ingredient) => getIngredient(ingredient))
-      .sort(),
-    price: pizza.price,
-    quantity: pizza.quantity,
+        .map((ingredient) => ({id: ingredient.id, ingredient: ingredient.ingredient})),
+    price: pizza.price || 0,
+    quantity: pizza.quantity || 0,
   };
 }
+
 
 export function OrderToOrderDto(order: Order) {
   return {
@@ -171,7 +199,7 @@ export function OrderDtoToOrder(order: any): Order {
     delivery: getDelivery(order.delivery),
     price: order.price,
     email: order.email,
-    pizzas: [],
+    pizzas: order.pizzas,
   };
 }
 

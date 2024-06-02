@@ -25,6 +25,7 @@ export const DEFAULT_PIZZA: Pizza = {
   ingredientsList: [],
 };
 export const DEFAULT_USER: User = {
+  username: "",
   firstname: "",
   lastname: "",
   email: "",

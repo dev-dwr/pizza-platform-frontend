@@ -1,10 +1,10 @@
 "use client";
 import { Stack, Typography } from "@mui/material";
-// import PizzaForm from "./components/PizzaForm";
+import PizzaForm from "./components/PizzaForm";
 import { DEFAULT_PIZZA } from "./utils/constants";
 import useHttp from "./hooks/use-http";
 import { addPizza } from "./utils/api";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { UIContext } from "./store/ui";
 import { enqueueSnackbar } from "notistack";
 import { Dough, Ingredient, Pizza, Role, Sauce, Size } from "./utils/types";
@@ -16,6 +16,7 @@ import salami from "./assets/salami.jpg";
 import hawaii from "./assets/hawaii.jpg";
 // @ts-ignore
 import funghi from "./assets/funghi.jpg";
+import DefaultPizza from "./components/DefaultPizza";
 
 const DEFAULT_PIZZAS = [
   {
@@ -81,20 +82,22 @@ export default function Home() {
           <Link href="/orders">Click here to manage Orders</Link>
         </Typography>
       )}
-      {/*{user?.userRole === Role.USER && (*/}
-      {/*  <Stack gap={4}>*/}
-      {/*    {DEFAULT_PIZZAS.map(({ photo, pizza }) => (*/}
-      {/*      <DefaultPizza*/}
-      {/*        key={pizza.name}*/}
-      {/*        pizza={pizza}*/}
-      {/*        photo={photo}*/}
-      {/*        onAdd={() => handleAdd(pizza)}*/}
-      {/*      />*/}
-      {/*    ))}*/}
+      {user?.userRole === Role.USER && (
+        <Stack gap={4}>
+          {DEFAULT_PIZZAS.map(({ photo, pizza }) => (
+            <DefaultPizza
+              key={pizza.name}
+              //@ts-ignore
+              pizza={pizza}
+              photo={photo}
+                //@ts-ignore
+              onAdd={() => handleAdd(pizza)}
+            />
+          ))}
 
-      {/*    <PizzaForm pizza={DEFAULT_PIZZA} onAdd={handleAdd} />*/}
-      {/*  </Stack>*/}
-      {/*)}*/}
+          <PizzaForm pizza={DEFAULT_PIZZA} onAdd={handleAdd} />
+        </Stack>
+      )}
     </Stack>
   );
 }

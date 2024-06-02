@@ -4,6 +4,7 @@ export enum Role {
 }
 
 export type User = {
+  username: string;
   firstname: string;
   lastname: string;
   email: string;
@@ -52,6 +53,16 @@ export enum Delivery {
   ON_PIZZA_PLACE = "On Pizza Place",
   ON_YOUR_HOME = "To Your Home",
 }
+
+export enum Delivery2 {
+  ON_PIZZA_PLACE = "ON_PIZZA_PLACE",
+  ON_YOUR_HOME = "ON_YOUR_HOME",
+}
+
+export type IngredientItem = {
+  id: number;
+  ingredient: Ingredient;
+};
 
 export type Pizza = {
   id: number;

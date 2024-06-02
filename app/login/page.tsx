@@ -47,7 +47,7 @@ export default function Login() {
   useEffect(() => {
     if (registerStatus === "success") {
       clearRegister();
-      enqueueSnackbar("Verification link sent to provided email.", {
+      enqueueSnackbar("Password was sent to provided email.", {
         variant: "success",
       });
       setLogin(true);

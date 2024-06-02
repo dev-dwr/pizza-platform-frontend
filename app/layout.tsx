@@ -5,7 +5,7 @@ import Layout from "./UI/Layout";
 import UIContextProvider from "./store/ui";
 
 export const metadata: Metadata = {
-  title: "Pizza System",
+  title: "Pizza Platform",
   description: "Order the best pizza in your neightbourhood",
 };
 

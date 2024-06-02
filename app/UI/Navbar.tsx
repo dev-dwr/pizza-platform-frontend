@@ -59,7 +59,7 @@ export default function Navbar() {
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Link href="/">
           <Typography letterSpacing="1rem">
-            Pizza {user?.userRole === Role.EMPLOYEE && "    Employee Panel"}
+            Pizza Platform {user?.userRole === Role.EMPLOYEE && "    Employee Panel"}
           </Typography>
         </Link>
         <Stack
@@ -73,7 +73,7 @@ export default function Navbar() {
             <Link href="/orders">Orders</Link>
           )}
           <Link href={user ? "/account" : "/login"}>
-            {user ? `Hello, ${user.firstname}` : "Login"}
+            {user ? `Hello, ${user.username}` : "Login"}
           </Link>
         </Stack>
         <Stack
